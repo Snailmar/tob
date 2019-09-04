@@ -6,7 +6,8 @@ html,body,header,section,footer,div,ul,ol,li,img,a,span,em,del,legend,center,str
     }
     *,*::before,*::after{
     -webkit-box-sizing: border-box;
-    box-sizing: border-box
+    box-sizing: border-box;
+    touch-action: none;
     }
     html,body {
     width: 100%;
@@ -29,7 +30,7 @@ html,body,header,section,footer,div,ul,ol,li,img,a,span,em,del,legend,center,str
     a, a:visited, a:hover, a:active { text-decoration: none; }
     a:active, a:hover {outline: 0;}
     a, a:visited{ text-decoration:none;}
-    img{border: 0;}
+    img{border: 0;pointer-events: none}
     .clearfix:before,.clearfix:after { display: table; content: " "; clear: both; }
     input{outline: none;border:none;
     -webkit-appearance: none;background: transparent}

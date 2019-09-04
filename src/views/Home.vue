@@ -6,6 +6,7 @@
     </keep-alive>
 
     <SearchList v-if="showSearchList" />
+
     <Tabbar ref="tabbar" />
   </div>
 </template>
@@ -73,4 +74,5 @@ export default {
 .view-home {
   height: 100%;
 }
+
 </style>

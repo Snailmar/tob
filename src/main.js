@@ -8,9 +8,10 @@ Vue.config.productionTip = false
 console.log(process.env.VUE_APP_URL)
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 Vue.use(VueAwesomeSwiper)
-import {Checklist,Loadmore } from 'mint-ui';
+import {Checklist,Loadmore ,Spinner} from 'mint-ui';
 Vue.component(Checklist.name, Checklist);
 Vue.component(Loadmore.name, Loadmore);
+Vue.component(Spinner.name, Spinner)
 new Vue({
   router,
   store,

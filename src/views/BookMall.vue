@@ -1,16 +1,42 @@
 <template>
   <div class="view-bookmall flex1 overflow-y">
-  <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange"
-                         :bottom-method="loadBottom" @bottom-status-change="handleBottomChange"
-                         :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+    <mt-loadmore
+      :top-method="loadTop"
+      @top-status-change="handleTopChange"
+      :bottom-method="loadBottom"
+      @bottom-status-change="handleBottomChange"
+      :bottom-all-loaded="allLoaded"
+      :auto-fill="false"
+      ref="loadmore"
+    >
       <Banner />
       <Nav />
-      <div v-for="(item,ind) in list" :key="ind">{{item}}</div>
+      <!-- <div v-for="(item,ind) in list" :key="ind">{{item}}</div> -->
       <BookDisplay :displayType="'narrow'" />
       <ColumnDisplay />
       <Catalog :title="'书库'" />
       <CopyRight />
       <ToTop />
+
+      <div slot="top" class="mint-loadmore-top flex f-center f-align" >
+        <span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">↓</span>
+        <span v-show="topStatus=='pull'">下拉更新</span>
+        <span v-show="topStatus=='loading'">更新中...</span>
+        <span v-show="topStatus=='drop'">释放更新</span>
+        <mt-spinner v-show="topStatus == 'loading'"  class="topSpinner" color='#01813b'></mt-spinner>
+      </div>
+      <div v-if="allLoaded" class="loadDone">没有更多数据了</div>
+      <div slot="bottom" class="mint-loadmore-bottom flex f-center">
+        <span
+          v-show="bottomStatus !== 'loading'"
+          :class="{ 'is-rotate': bottomStatus === 'drop' }"
+        >↑</span>
+         <span v-show="bottomStatus=='pull'">上拉加载更多</span>
+        <span v-show="bottomStatus=='loading'">加载中</span>
+        <span v-show="bottomStatus=='drop'">释放加载更多</span>
+          <mt-spinner v-show="bottomStatus == 'loading'" class="bottomSpinner" color='#01813b' type='triple-bounce' ></mt-spinner>
+        
+      </div>
     </mt-loadmore>
   </div>
 </template>
@@ -27,10 +53,11 @@ export default {
   name: "bookmall",
   data() {
     return {
-      loading: false,
       list: [],
       topStatus: "",
-      allLoaded: false
+      bottomStatus: "",
+      allLoaded: false,
+      pageNum:1
     };
   },
   components: {
@@ -43,16 +70,38 @@ export default {
     ToTop
   },
   methods: {
+    handleBottomChange(status) {
+      this.bottomStatus = status;
+    },
+    loadBottom() {
+      this.handleBottomChange("loading"); //上拉时 改变状态码
+      console.log(this.$refs.loadmore)
+      this.pageNum += 1;
+      setTimeout(() => {
+        //上拉加载更多 模拟数据请求这里为了方便使用一次性定时器
+        if (this.pageNum <= 3) {
+          //最多下拉三次
+          this.list.push(2); //上拉加载 每次数值加12
+        } else {
+          this.allLoaded = true; //模拟数据加载完毕 禁用上拉加载
+        }
+        this.handleBottomChange("loadingEnd"); //数据加载完毕 修改状态码
+        this.$refs.loadmore.onBottomLoaded();
+      }, 5000);
+    },
+    handleTopChange(status) {
+      this.topStatus = status;
+    },
     loadTop() {
-      console.log(this.topStatus);
-    },
-    loadBottom() {},
-    handleTopChange(s){
-console.log(s)
-    },
-    handleBottomChange(s){
-console.log(s)
-
+      //下拉刷新 模拟数据请求这里为了方便使用一次性定时器
+      this.handleTopChange("loading"); //下拉时 改变状态码
+      this.pageNum = 1;
+      this.allLoaded = false; //下拉刷新时解除上拉加载的禁用
+      setTimeout(() => {
+        this.list.push(2); //下拉刷新 数据初始化
+        this.handleTopChange("loadingEnd"); //数据加载完毕 修改状态码
+        this.$refs.loadmore.onTopLoaded();
+      }, 1500);
     }
   },
   activated() {
@@ -61,7 +110,21 @@ console.log(s)
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 .view-bookmall {
+}
+.topSpinner{
+    .mint-spinner-snake{
+        width: .28rem!important;
+        height: .28rem!important;
+        border-width: .04rem !important;
+    }
+}
+.is-rotate{
+    transform: rotate(180deg);
+    transition: all .2s;
+}
+.loadDone{
+    text-align: center;
 }
 </style>

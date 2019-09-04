@@ -1,5 +1,14 @@
 <template>
   <div class="flex1  view-bookshelf overflow-y">
+       <mt-loadmore
+      :top-method="loadTop"
+      @top-status-change="handleTopChange"
+      :bottom-method="loadBottom"
+      @bottom-status-change="handleBottomChange"
+      :bottom-all-loaded="allLoaded"
+      :auto-fill="false"
+      ref="loadmore"
+    >
     <div
       class="book-wrap"
       v-for="item of bookList"
@@ -25,7 +34,28 @@
         <span class="iconfont iconziyuan1 selectedIcon"  :class="{sltCur:checkList.indexOf(item.id)>=0}"></span>
       </label>
     </div>
-    <div class="delSelected" v-if="showCheckbox" @click="handleDel">删除</div>
+    <div class="clearfix"></div>
+    <div class="delSelected" v-if="showCheckbox" @click="handleDel">{{checkList.length==0?"完成":"删除"}}</div>
+    <div slot="top" class="mint-loadmore-top flex f-center f-align" >
+        <span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">↓</span>
+        <span v-show="topStatus=='pull'">下拉更新</span>
+        <span v-show="topStatus=='loading'">更新中...</span>
+        <span v-show="topStatus=='drop'">释放更新</span>
+        <mt-spinner v-show="topStatus == 'loading'"  class="topSpinner" color='#01813b'></mt-spinner>
+      </div>
+      <div v-if="allLoaded" class="loadDone">没有更多数据了</div>
+      <div slot="bottom" class="mint-loadmore-bottom flex f-center">
+        <span
+          v-show="bottomStatus !== 'loading'"
+          :class="{ 'is-rotate': bottomStatus === 'drop' }"
+        >↑</span>
+         <span v-show="bottomStatus=='pull'">上拉加载更多</span>
+        <span v-show="bottomStatus=='loading'">加载中</span>
+        <span v-show="bottomStatus=='drop'">释放加载更多</span>
+          <mt-spinner v-show="bottomStatus == 'loading'" class="bottomSpinner" color='#01813b' type='triple-bounce' ></mt-spinner>
+        
+      </div>
+    </mt-loadmore>
   </div>
 </template>
 
@@ -40,7 +70,11 @@ export default {
       bookList: [],
       checkList: [],
       checked: true,
-      showCheckbox: false
+      showCheckbox: false,
+         topStatus: "",
+      bottomStatus: "",
+      allLoaded: false,
+      pageNum:1
     };
   },
   created() {
@@ -61,6 +95,7 @@ export default {
         this.showCheckbox = true;
         //将第一个选中的id推入数组
         this.checkList.push(id);
+        document.querySelector('.com-tabbar').style.display='none'//兼容ios的布局bug
       }, delayTime);
     },
     getMove() {
@@ -82,6 +117,11 @@ export default {
       }
     },
     handleDel() {
+        if(this.checkList.length==0) {
+             this.showCheckbox = false;
+        document.querySelector('.com-tabbar').style.display='block'//兼容ios的布局bug
+        return;
+        }
       //删除按钮
       MessageBox.confirm("确定删除?")
         .then(result => {
@@ -94,11 +134,46 @@ export default {
           //发送请求到后端将数据删除
           this.checkList = [];
           this.showCheckbox = false;
+        document.querySelector('.com-tabbar').style.display='block'//兼容ios的布局bug
+
         })
         .catch(err => {
           this.checkList = [];
           this.showCheckbox = false;
+        document.querySelector('.com-tabbar').style.display='block'//兼容ios的布局bug
+
         });
+    },
+    handleBottomChange(status) {
+      this.bottomStatus = status;
+    },
+    loadBottom() {
+      this.handleBottomChange("loading"); //上拉时 改变状态码
+      console.log(this.$refs.loadmore)
+      this.pageNum += 1;
+      setTimeout(() => {
+        //上拉加载更多 模拟数据请求这里为了方便使用一次性定时器
+        if (this.pageNum <= 3) {
+          //最多下拉三次
+        } else {
+          this.allLoaded = true; //模拟数据加载完毕 禁用上拉加载
+        }
+        this.handleBottomChange("loadingEnd"); //数据加载完毕 修改状态码
+        this.$refs.loadmore.onBottomLoaded();
+      }, 5000);
+    },
+    handleTopChange(status) {
+      this.topStatus = status;
+    },
+    loadTop() {
+      //下拉刷新 模拟数据请求这里为了方便使用一次性定时器
+      this.handleTopChange("loading"); //下拉时 改变状态码
+      this.pageNum = 1;
+      this.allLoaded = false; //下拉刷新时解除上拉加载的禁用
+      setTimeout(() => {
+        this.handleTopChange("loadingEnd"); //数据加载完毕 修改状态码
+        this.$refs.loadmore.onTopLoaded();
+      }, 1500);
     }
   },
   activated() {
@@ -110,6 +185,7 @@ export default {
 <style lang="scss" scoped>
 .view-bookshelf {
   position: relative;
+  z-index: 888;
   padding: 0.4rem 0.4rem 0 0.4rem;
   .book-wrap {
       float: left;
@@ -156,8 +232,10 @@ export default {
   left: 0;
   text-align: center;
   width: 100%;
-  height: 0.84rem;
+  height: 0.88rem;
+  line-height: .88rem;
   background: #fff;
+  z-index: 999999;
 }
 .selectedIcon{
     width: .36rem;height: .36rem;background: #6f6f6f;
