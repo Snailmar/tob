@@ -12,6 +12,10 @@ mine
                 
             }
         },
+        created() {
+            document.title='我的'
+            
+        },
         activated() {
             document.title='我的'
         },

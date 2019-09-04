@@ -69,6 +69,10 @@ export default {
     CopyRight,
     ToTop
   },
+  created() {
+    document.title = "书城";
+      
+  },
   methods: {
     handleBottomChange(status) {
       this.bottomStatus = status;

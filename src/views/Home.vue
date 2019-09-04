@@ -1,7 +1,7 @@
 <template>
   <div class="view-home flex column f-algin f-between">
     <Search v-if="isShowSearchDom" />
-    <keep-alive include="bookmall,mine">
+    <keep-alive >
       <router-view v-if="!showSearchList"></router-view>
     </keep-alive>
 

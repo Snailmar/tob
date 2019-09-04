@@ -35,14 +35,13 @@
       </label>
     </div>
     <div class="clearfix"></div>
-    <div class="delSelected" v-if="showCheckbox" @click="handleDel">{{checkList.length==0?"完成":"删除"}}</div>
     <div slot="top" class="mint-loadmore-top flex f-center f-align" >
         <span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">↓</span>
         <span v-show="topStatus=='pull'">下拉更新</span>
         <span v-show="topStatus=='loading'">更新中...</span>
         <span v-show="topStatus=='drop'">释放更新</span>
         <mt-spinner v-show="topStatus == 'loading'"  class="topSpinner" color='#01813b'></mt-spinner>
-      </div>
+    </div>
       <div v-if="allLoaded" class="loadDone">没有更多数据了</div>
       <div slot="bottom" class="mint-loadmore-bottom flex f-center">
         <span
@@ -52,10 +51,12 @@
          <span v-show="bottomStatus=='pull'">上拉加载更多</span>
         <span v-show="bottomStatus=='loading'">加载中</span>
         <span v-show="bottomStatus=='drop'">释放加载更多</span>
-          <mt-spinner v-show="bottomStatus == 'loading'" class="bottomSpinner" color='#01813b' type='triple-bounce' ></mt-spinner>
+        <mt-spinner v-show="bottomStatus == 'loading'" class="bottomSpinner" color='#01813b' type='triple-bounce' ></mt-spinner>
         
       </div>
     </mt-loadmore>
+    <div class="delSelected" v-if="showCheckbox" @click="handleDel">{{checkList.length==0?"完成":"删除"}}</div>
+
   </div>
 </template>
 
@@ -78,6 +79,7 @@ export default {
     };
   },
   created() {
+    document.title = "书架";
     this.$axios
       .get("/bookshelf")
       .then(result => {
@@ -151,16 +153,23 @@ export default {
       this.handleBottomChange("loading"); //上拉时 改变状态码
       console.log(this.$refs.loadmore)
       this.pageNum += 1;
-      setTimeout(() => {
         //上拉加载更多 模拟数据请求这里为了方便使用一次性定时器
-        if (this.pageNum <= 3) {
-          //最多下拉三次
+        setTimeout(() => {
+        if (this.pageNum <= 2) {
+            
+            this.$axios
+      .get("/bookshelf1")
+      .then(result => {
+        var res = result.data.data.imginfo;
+        this.bookList =this.bookList.concat(res) ;
+      })
+      .catch(err => {});
         } else {
           this.allLoaded = true; //模拟数据加载完毕 禁用上拉加载
         }
         this.handleBottomChange("loadingEnd"); //数据加载完毕 修改状态码
         this.$refs.loadmore.onBottomLoaded();
-      }, 5000);
+        }, 1000);
     },
     handleTopChange(status) {
       this.topStatus = status;
@@ -178,15 +187,21 @@ export default {
   },
   activated() {
     document.title = "书架";
-  }
+  },
+  deactivated() {
+      this.checkList = [];
+          this.showCheckbox = false;
+        document.querySelector('.com-tabbar').style.display='block'//兼容ios的布局bug
+      
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .view-bookshelf {
   position: relative;
-  z-index: 888;
   padding: 0.4rem 0.4rem 0 0.4rem;
+
   .book-wrap {
       float: left;
     width: 33.33%;
@@ -235,7 +250,7 @@ export default {
   height: 0.88rem;
   line-height: .88rem;
   background: #fff;
-  z-index: 999999;
+  z-index: 2;
 }
 .selectedIcon{
     width: .36rem;height: .36rem;background: #6f6f6f;
