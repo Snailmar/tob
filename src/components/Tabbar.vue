@@ -58,7 +58,7 @@ export default {
         margin-bottom: 1px;
       }
       i{
-          font-size: .16rem;
+          font-size: .3rem;
       }
     }
   }

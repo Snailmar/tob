@@ -220,7 +220,7 @@ export default {
       line-height: 0.44rem;
       margin: 0 auto;
       width: 1.7rem;
-      padding-top: 0.16rem;
+      padding-top: 0.3rem;
     }
   }
 }

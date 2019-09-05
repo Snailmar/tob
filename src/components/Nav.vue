@@ -67,7 +67,7 @@ export default {
 <style lang="scss" >
 .com-nav {
   .swiper-container {
-    margin: 0 0.16rem;
+    margin: 0 0.3rem;
     // height: 2.2rem;
     
     padding: .2rem 0 .56rem;

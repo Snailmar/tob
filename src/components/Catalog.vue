@@ -31,10 +31,12 @@ export default {
 
 <style lang="scss" scoped>
 .com-catalog {
-  margin: 0 0.16rem 0.2rem;
+  margin: 0 0.3rem 0.2rem;
+  padding-top: .28rem;
   .title-wrap{
+    margin-bottom: .3rem;
       .line{
-          height: 2px;
+          height: 1px;
           background: #f00;
       }
       .title{
@@ -46,12 +48,14 @@ export default {
       flex-wrap: wrap;
       .sub-title{
           width: 30%;
-          height: .5rem;
-          line-height: .5rem;
+          height: .74rem;
+          line-height: .74rem;
           text-align: center;
-          background: #ccc;
-          border-radius: .5rem;
-          margin-bottom: .1rem;
+          background: rgba(242, 242, 242, 1);
+          border-radius: .38rem;
+          margin-bottom: .2rem;
+          color: #000;
+          font-size: .28rem;
       }
   }
 }

@@ -4,6 +4,7 @@ import router from './router'
 import './utils/axios.js'
 import store from './store'
 import 'swiper/dist/css/swiper.css'
+import 'animate.css'
 Vue.config.productionTip = false
 console.log(process.env.VUE_APP_URL)
 import VueAwesomeSwiper from 'vue-awesome-swiper';

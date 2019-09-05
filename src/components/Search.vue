@@ -68,7 +68,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .com-search {
-  margin: 0.28rem 0.16rem .1rem;
+  margin: 0.28rem 0.3rem .1rem;
   border: 2px solid #979797;
   border-radius: 0.2rem;
   padding: 0 0.23rem;
@@ -93,7 +93,7 @@ export default {
   }
 }
     .cancleBtn{
-  margin: .15rem .16rem 0 0;
+  margin: .15rem .3rem 0 0;
   font-size: .3rem;
     }
  

@@ -13,7 +13,7 @@
       <Nav />
       <!-- <div v-for="(item,ind) in list" :key="ind">{{item}}</div> -->
       <BookDisplay :displayType="'narrow'" />
-      <ColumnDisplay />
+      <RowDisplay />
       <Catalog :title="'书库'" />
       <CopyRight />
       <ToTop />
@@ -45,7 +45,7 @@
 import Banner from "@/components/Banner";
 import Nav from "@/components/Nav";
 import BookDisplay from "@/components/BookDisplay";
-import ColumnDisplay from "@/components/ColumnDisplay";
+import RowDisplay from "@/components/RowDisplay";
 import Catalog from "@/components/Catalog";
 import CopyRight from "@/components/CopyRight";
 import ToTop from "@/components/ToTop";
@@ -64,7 +64,7 @@ export default {
     Banner,
     Nav,
     BookDisplay,
-    ColumnDisplay,
+    RowDisplay,
     Catalog,
     CopyRight,
     ToTop

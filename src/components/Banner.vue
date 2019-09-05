@@ -56,7 +56,7 @@ export default {
 <style lang="scss" >
 .com-banner {
   .swiper-container {
-    margin: 0 0.16rem;
+    margin: 0 .30rem;
     border-radius: 0.2rem;
     height: 2.84rem;
     img {
