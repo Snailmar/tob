@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     showSearchList: false,
     keywords: '',
-    isShowSearchDom: false,
+    isShowSearchDom: true,
     searchListResult: null//保存搜索结果
   },
   mutations: {

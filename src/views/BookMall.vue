@@ -1,42 +1,50 @@
 <template>
-  <div class="view-bookmall flex1 overflow-y">
-    <mt-loadmore
-      :top-method="loadTop"
-      @top-status-change="handleTopChange"
-      :bottom-method="loadBottom"
-      @bottom-status-change="handleBottomChange"
-      :bottom-all-loaded="allLoaded"
-      :auto-fill="false"
-      ref="loadmore"
-    >
-      <Banner />
-      <Nav />
-      <!-- <div v-for="(item,ind) in list" :key="ind">{{item}}</div> -->
-      <BookDisplay :displayType="'narrow'" />
-      <RowDisplay />
-      <Catalog :title="'书库'" />
-      <ToTop />
+  <div class="view-bookmall flex1 flex column">
+    <Search />
+    <SearchList  v-if="showSearchList"/>
+    <div class="overflow-y flex1 " v-if="!showSearchList">
+      <mt-loadmore
+        :top-method="loadTop"
+        @top-status-change="handleTopChange"
+        :bottom-method="loadBottom"
+        @bottom-status-change="handleBottomChange"
+        :bottom-all-loaded="allLoaded"
+        :auto-fill="false"
+        ref="loadmore"
+      >
+        <Banner />
+        <Nav />
+        <!-- <div v-for="(item,ind) in list" :key="ind">{{item}}</div> -->
+        <BookDisplay :displayType="'narrow'" />
+        <RowDisplay />
+        <Catalog :title="'书库'" />
+        <ToTop />
 
-      <div slot="top" class="mint-loadmore-top flex f-center f-align" >
-        <span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">↓</span>
-        <span v-show="topStatus=='pull'">下拉更新</span>
-        <span v-show="topStatus=='loading'">更新中...</span>
-        <span v-show="topStatus=='drop'">释放更新</span>
-        <mt-spinner v-show="topStatus == 'loading'"  class="topSpinner" color='#01813b'></mt-spinner>
-      </div>
-      <div v-if="allLoaded" class="loadDone">没有更多数据了</div>
-      <div slot="bottom" class="mint-loadmore-bottom flex f-center">
-        <span
-          v-show="bottomStatus !== 'loading'"
-          :class="{ 'is-rotate': bottomStatus === 'drop' }"
-        >↑</span>
-         <span v-show="bottomStatus=='pull'">上拉加载更多</span>
-        <span v-show="bottomStatus=='loading'">加载中</span>
-        <span v-show="bottomStatus=='drop'">释放加载更多</span>
-          <mt-spinner v-show="bottomStatus == 'loading'" class="bottomSpinner" color='#01813b' type='triple-bounce' ></mt-spinner>
-        
-      </div>
-    </mt-loadmore>
+        <div slot="top" class="mint-loadmore-top flex f-center f-align">
+          <span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">↓</span>
+          <span v-show="topStatus=='pull'">下拉更新</span>
+          <span v-show="topStatus=='loading'">更新中...</span>
+          <span v-show="topStatus=='drop'">释放更新</span>
+          <mt-spinner v-show="topStatus == 'loading'" class="topSpinner" color="#01813b"></mt-spinner>
+        </div>
+        <div v-if="allLoaded" class="loadDone">没有更多数据了</div>
+        <div slot="bottom" class="mint-loadmore-bottom flex f-center">
+          <span
+            v-show="bottomStatus !== 'loading'"
+            :class="{ 'is-rotate': bottomStatus === 'drop' }"
+          >↑</span>
+          <span v-show="bottomStatus=='pull'">上拉加载更多</span>
+          <span v-show="bottomStatus=='loading'">加载中</span>
+          <span v-show="bottomStatus=='drop'">释放加载更多</span>
+          <mt-spinner
+            v-show="bottomStatus == 'loading'"
+            class="bottomSpinner"
+            color="#01813b"
+            type="triple-bounce"
+          ></mt-spinner>
+        </div>
+      </mt-loadmore>
+    </div>
   </div>
 </template>
 
@@ -47,6 +55,9 @@ import BookDisplay from "@/components/BookDisplay";
 import RowDisplay from "@/components/RowDisplay";
 import Catalog from "@/components/Catalog";
 import ToTop from "@/components/ToTop";
+import Search from "@/components/Search";
+import SearchList from "@/components/SearchList";
+import {mapState,mapActions} from 'vuex'
 export default {
   name: "bookmall",
   data() {
@@ -55,7 +66,7 @@ export default {
       topStatus: "",
       bottomStatus: "",
       allLoaded: false,
-      pageNum:1
+      pageNum: 1
     };
   },
   components: {
@@ -64,11 +75,12 @@ export default {
     BookDisplay,
     RowDisplay,
     Catalog,
-    ToTop
+    ToTop,
+    Search,
+    SearchList
   },
   created() {
     document.title = "书城";
-      
   },
   methods: {
     handleBottomChange(status) {
@@ -76,7 +88,7 @@ export default {
     },
     loadBottom() {
       this.handleBottomChange("loading"); //上拉时 改变状态码
-      console.log(this.$refs.loadmore)
+      console.log(this.$refs.loadmore);
       this.pageNum += 1;
       setTimeout(() => {
         //上拉加载更多 模拟数据请求这里为了方便使用一次性定时器
@@ -103,29 +115,36 @@ export default {
         this.handleTopChange("loadingEnd"); //数据加载完毕 修改状态码
         this.$refs.loadmore.onTopLoaded();
       }, 1500);
-    }
+    },
+    ...mapActions(['changeSearchList'])
+  },
+  computed: {
+    ...mapState(['showSearchList','isShowSearchDom'])
   },
   activated() {
     document.title = "书城";
-  }
+  },
+  deactivated() {
+    this.changeSearchList(false)
+  },
 };
 </script>
 
 <style lang="scss" >
 .view-bookmall {
 }
-.topSpinner{
-    .mint-spinner-snake{
-        width: .28rem!important;
-        height: .28rem!important;
-        border-width: .04rem !important;
-    }
+.topSpinner {
+  .mint-spinner-snake {
+    width: 0.28rem !important;
+    height: 0.28rem !important;
+    border-width: 0.04rem !important;
+  }
 }
-.is-rotate{
-    transform: rotate(180deg);
-    transition: all .2s;
+.is-rotate {
+  transform: rotate(180deg);
+  transition: all 0.2s;
 }
-.loadDone{
-    text-align: center;
+.loadDone {
+  text-align: center;
 }
 </style>

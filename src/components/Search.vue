@@ -26,6 +26,7 @@ export default {
   },
   props: {},
   mounted() {},
+
   methods: {
     handleSearch() {
       if (!this.keywords) return;

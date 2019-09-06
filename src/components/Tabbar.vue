@@ -17,29 +17,21 @@
   </div>
 </template>
 <script>
-import {mapActions,mapState} from 'vuex';
 export default {
   data() {
     return {};
   },
   methods: {
    clickBookmall(){
-     this.changeSeachDom(true)
 
    },
    clickBookshelf(){
-     this.changeSeachDom(false)
-     this.changeSearchList(false)
 
    },
    clickMine(){
-     this.changeSeachDom(false)
-     this.changeSearchList(false)
    },
-    ...mapActions(['changeSeachDom','changeSearchList'])
   },
   computed: {
-    ...mapState(['isShowSearchDom'])
   },
 };
 </script>

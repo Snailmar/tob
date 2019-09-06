@@ -107,10 +107,7 @@ export default {
       clearTimeout(timer);
     },
     handleSelect(e, id) {
-      console.log(e.target.checked);
-      console.log(e.target.nextSibling)
       var isChecked = e.target.checked;
-      var nextNode=e.target.nextSibling
       if (isChecked) {
         this.checkList.push(id); //如果被选中则将选中id推入数组
       } else if (this.checkList.indexOf(id) >= 0 && !isChecked) {
