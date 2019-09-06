@@ -1,8 +1,8 @@
 <template>
   <div class="com-chapterlist">
-    <div class="ccl-mask" @click="hideMask"></div>
+    <div class="ccl-mask" @click="hideMask" ref="mask"></div>
 
-    <div class="ccl-wrap animated bounceInUp" >
+    <div class="ccl-wrap animated bounceInUp" ref="cclWrap">
       <div class="ccl-title">-选集-</div>
       <ul class="ccl-list flex">
         <li class="ccl-cell" v-for="(item,ind) of list" :key="ind"><div @click="cellClick(ind)" :class="{activeColor:index==ind}">1-50</div></li>
@@ -21,9 +21,19 @@ export default {
         index:''
     };
   },
+  mounted() {
+    this.$refs.mask.ontouchmove=(e)=>{
+      e.preventDefault();
+      
+    }
+  },
   methods: {
       hideMask(){
-          this.$parent.isShowChaperList=false;
+        this.$refs.cclWrap.classList.remove('bounceInUp')
+          this.$refs.cclWrap.classList.add('fadeOutDown')
+            setTimeout(()=>{
+              this.$parent.isShowChaperList=false;
+            },500)
       },
       cellClick(ind){
           this.index=ind
@@ -68,6 +78,8 @@ export default {
 .ccl-list{
     flex-wrap: wrap;
     padding:0 .96rem .6rem;
+    max-height: 6rem;
+    overflow-y: auto;
 }
 .ccl-cell {
     width: 33.33%;

@@ -78,7 +78,7 @@ this.isShowChaperList=true
 }
 .cim-introduce {
   border-bottom: 1px solid #ededed;
-  padding: 0.3rem 0.22rem;
+  padding: 0.3rem;
   font-size: 0.26rem;
   color: #666;
   line-height: 0.42rem;

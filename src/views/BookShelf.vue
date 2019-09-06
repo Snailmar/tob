@@ -162,13 +162,13 @@ export default {
       .then(result => {
         var res = result.data.data.imginfo;
         this.bookList =this.bookList.concat(res) ;
+          this.handleBottomChange("loadingEnd"); //数据加载完毕 修改状态码
+          this.$refs.loadmore.onBottomLoaded();
       })
       .catch(err => {});
         } else {
           this.allLoaded = true; //模拟数据加载完毕 禁用上拉加载
         }
-        this.handleBottomChange("loadingEnd"); //数据加载完毕 修改状态码
-        this.$refs.loadmore.onBottomLoaded();
         }, 1000);
     },
     handleTopChange(status) {

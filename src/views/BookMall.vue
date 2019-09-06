@@ -15,7 +15,6 @@
       <BookDisplay :displayType="'narrow'" />
       <RowDisplay />
       <Catalog :title="'书库'" />
-      <CopyRight />
       <ToTop />
 
       <div slot="top" class="mint-loadmore-top flex f-center f-align" >
@@ -47,7 +46,6 @@ import Nav from "@/components/Nav";
 import BookDisplay from "@/components/BookDisplay";
 import RowDisplay from "@/components/RowDisplay";
 import Catalog from "@/components/Catalog";
-import CopyRight from "@/components/CopyRight";
 import ToTop from "@/components/ToTop";
 export default {
   name: "bookmall",
@@ -66,7 +64,6 @@ export default {
     BookDisplay,
     RowDisplay,
     Catalog,
-    CopyRight,
     ToTop
   },
   created() {

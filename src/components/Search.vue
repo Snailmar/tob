@@ -13,68 +13,63 @@
       />
       <span class="icon iconfont iconsousuoguanbi" v-if="!!keywords" @click.stop="clearSearch"></span>
     </div>
-      <div  v-if="showSearchList" @click.stop="cancleSearch" class="cancleBtn">取消</div>
+    <div v-if="showSearchList" @click.stop="cancleSearch" class="cancleBtn">取消</div>
   </div>
 </template>
 <script>
-import { mapActions,mapState } from 'vuex'
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
       keywords: ""
     };
   },
-  props:{
-
-  },
-  mounted() {
-   
-  },
+  props: {},
+  mounted() {},
   methods: {
     handleSearch() {
-      if(!this.keywords) return
-      this.$axios.get('/nav').then((result) => {
-        
-        this.getSearchListResult(result)
-      }).catch((err) => {
-        
-      });
-      this.saveKeywords(this.keywords)
+      if (!this.keywords) return;
+      this.$axios
+        .get("/nav")
+        .then(result => {
+          this.getSearchListResult(result);
+        })
+        .catch(err => {});
+      this.saveKeywords(this.keywords);
     },
     handleFocus() {
-        this.changeSearchList(true)
+      this.changeSearchList(true);
     },
-    handleBlur(){
-        if(!this.keywords){
-        this.changeSearchList(false)      
-        }
+    handleBlur() {
+      if (!this.keywords) {
+        this.changeSearchList(false);
+      }
     },
-    cancleSearch(){
-        this.changeSearchList(false)
-        this.keywords=''
-        this.saveKeywords('')
+    cancleSearch() {
+      this.changeSearchList(false);
+      this.keywords = "";
+      this.saveKeywords("");
     },
-    clearSearch(){
-        this.keywords=''
-        this.saveKeywords('')
-
+    clearSearch() {
+      this.keywords = "";
+      this.saveKeywords("");
     },
-    ...mapActions(['changeSearchList','saveKeywords','getSearchListResult'])
+    ...mapActions(["changeSearchList", "saveKeywords", "getSearchListResult"])
   },
   computed: {
-    ...mapState(['showSearchList'])
-  },
+    ...mapState(["showSearchList"])
+  }
 };
 </script>
 <style lang="scss" scoped>
 .com-search {
-  margin: 0.28rem 0.3rem .1rem;
+  margin: 0.28rem 0.3rem 0.1rem;
   border: 2px solid #979797;
   border-radius: 0.2rem;
   padding: 0 0.23rem;
   font-size: 0.28rem;
   height: 0.64rem;
-  .span {
+  span {
     font-size: 0.28rem;
     color: #979797;
   }
@@ -92,9 +87,8 @@ export default {
     line-height: 1.2;
   }
 }
-    .cancleBtn{
-  margin: .15rem .3rem 0 0;
-  font-size: .3rem;
-    }
- 
+.cancleBtn {
+  margin: 0.15rem 0.3rem 0 0;
+  font-size: 0.3rem;
+}
 </style>
