@@ -38,6 +38,7 @@ export default {
   .vr-top {
     padding: 0.32rem 0.94rem;
     position: relative;
+        overflow: hidden;
     .vr-top-bg {
       background-size: cover;
       background-repeat: no-repeat;
@@ -46,7 +47,7 @@ export default {
       position: absolute;
       left: 0;
       top: 0;
-      filter: blur(10);
+      filter: blur(10px);
       overflow: hidden;
       opacity: 0.3;
     }

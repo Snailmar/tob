@@ -64,6 +64,7 @@
 var timer = null;
 const delayTime = 700;
 import { MessageBox } from "mint-ui";
+import {mapActions} from 'vuex'
 export default {
   name: "boookshelf",
   data() {
@@ -183,12 +184,15 @@ export default {
         this.handleTopChange("loadingEnd"); //数据加载完毕 修改状态码
         this.$refs.loadmore.onTopLoaded();
       }, 1500);
-    }
+    },
+    ...mapActions(['changeSeachDom'])
   },
   activated() {
     document.title = "书架";
+this.changeSeachDom(false)
   },
   deactivated() {
+    console.log()
       this.checkList = [];
           this.showCheckbox = false;
         document.querySelector('.com-tabbar').style.display='block'//兼容ios的布局bug

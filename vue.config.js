@@ -6,7 +6,7 @@ module.exports = {
     lintOnSave: false, // 关闭eslint
     productionSourceMap: true, // 生产环境下css 分离文件
     devServer: { // 配置服务器
-        host:'127.0.0.1',
+        // host:'127.0.0.1',
         port: 8081,
         open: true,
         // https: false,

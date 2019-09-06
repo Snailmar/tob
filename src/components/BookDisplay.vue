@@ -28,13 +28,25 @@ export default {
       default: "wide" //组件传入narrow或者wide对应为宽窄展示,narrow为音频和读书,wide为视屏
     }
   },
-  mounted() {
-    console.log(this.displayType);
-    if (this.displayType == "narrow") {
+  methods: {
+    typeChanged(){
+       if (this.displayType == "narrow") {
       this.txtClass = "txt-hide2";
       this.iconName = "icontingshu";
+    }else{
+       this.txtClass = "txt-hide";
+      this.iconName = "iconbofang";
     }
-  }
+    }
+  },
+  mounted() {
+   this.typeChanged()
+   
+  },
+  updated() {
+   this.typeChanged()
+    
+  },
 };
 </script>
 

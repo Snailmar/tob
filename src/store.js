@@ -38,6 +38,7 @@ export default new Vuex.Store({
     changeSeachDom({
       commit
     }, flag) {
+      console.log(flag)
       commit('changeSeachDom', flag)
     },
     getSearchListResult({

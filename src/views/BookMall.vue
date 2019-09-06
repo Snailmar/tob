@@ -1,5 +1,8 @@
 <template>
-  <div class="view-bookmall flex1 overflow-y">
+  <div class="view-bookmall flex1 ">
+    <Search/>
+<SearchList></SearchList>
+<div class="overflow-y">
     <mt-loadmore
       :top-method="loadTop"
       @top-status-change="handleTopChange"
@@ -36,7 +39,7 @@
           <mt-spinner v-show="bottomStatus == 'loading'" class="bottomSpinner" color='#01813b' type='triple-bounce' ></mt-spinner>
         
       </div>
-    </mt-loadmore>
+    </mt-loadmore></div>
   </div>
 </template>
 
@@ -47,6 +50,8 @@ import BookDisplay from "@/components/BookDisplay";
 import RowDisplay from "@/components/RowDisplay";
 import Catalog from "@/components/Catalog";
 import ToTop from "@/components/ToTop";
+import Search from "@/components/Search";
+import SearchList from "@/components/SearchList";
 export default {
   name: "bookmall",
   data() {
@@ -64,7 +69,7 @@ export default {
     BookDisplay,
     RowDisplay,
     Catalog,
-    ToTop
+    ToTop,Search,SearchList
   },
   created() {
     document.title = "书城";
@@ -107,7 +112,10 @@ export default {
   },
   activated() {
     document.title = "书城";
-  }
+  },
+  deactivated() {
+  
+  },
 };
 </script>
 
