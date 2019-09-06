@@ -116,22 +116,25 @@ export default {
         this.$refs.loadmore.onTopLoaded();
       }, 1500);
     },
-    ...mapActions(['changeSearchList'])
+    ...mapActions(['changeSearchList','saveKeywords','setSearchListResult'])
   },
   computed: {
     ...mapState(['showSearchList','isShowSearchDom'])
   },
   activated() {
     document.title = "书城";
+    
   },
   deactivated() {
     this.changeSearchList(false)
-  },
+  this.setSearchListResult('')
+  }
 };
 </script>
 
 <style lang="scss" >
 .view-bookmall {
+  overflow: hidden;
 }
 .topSpinner {
   .mint-spinner-snake {

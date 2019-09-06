@@ -1,11 +1,11 @@
 <template>
   <div class="flex f-align search-com">
-    <div class="com-search flex f-align flex1">
+    <div class="com-search flex f-align flex1" id="com">
       <span class="icon iconfont iconchazhao"></span>
       <input
         type="text"
         placeholder="请输入作者或书名"
-        class="flex1"
+        class="flex1 " id="inputKeywords"
         v-model="keywords"
         @keyup.enter="handleSearch"
         @focus="handleFocus"
@@ -19,21 +19,25 @@
 <script>
 import { mapActions, mapState } from "vuex";
 export default {
+  name:'search',
   data() {
     return {
-      keywords: ""
+      keywords:''
     };
   },
   props: {},
-  mounted() {},
+  mounted() {
+    },
+updated() {
 
+},
   methods: {
     handleSearch() {
       if (!this.keywords) return;
       this.$axios
         .get("/nav")
         .then(result => {
-          this.getSearchListResult(result);
+          this.setSearchListResult(result);
         })
         .catch(err => {});
       this.saveKeywords(this.keywords);
@@ -55,11 +59,15 @@ export default {
       this.keywords = "";
       this.saveKeywords("");
     },
-    ...mapActions(["changeSearchList", "saveKeywords", "getSearchListResult"])
+    ...mapActions(["changeSearchList", "saveKeywords", "setSearchListResult"])
   },
   computed: {
     ...mapState(["showSearchList"])
-  }
+  },
+  deactivated() {
+    this.keywords=''
+    this.setSearchListResult('')//清空搜索结果
+  },
 };
 </script>
 <style lang="scss" scoped>

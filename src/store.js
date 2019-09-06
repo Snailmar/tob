@@ -13,6 +13,9 @@ export default new Vuex.Store({
   mutations: {
     changeSearchList(state, flag) {
       state.showSearchList = flag
+      if(!flag){
+        state.searchListResult=''
+      }
     },
     saveKeywords(state, keywords) {
       state.keywords = keywords
@@ -20,7 +23,7 @@ export default new Vuex.Store({
     changeSeachDom(state, flag) {
       state.isShowSearchDom = flag
     },
-    getSearchListResult(state, result) {
+    setSearchListResult(state, result) {
       state.searchListResult = result
     }
   },
@@ -38,13 +41,14 @@ export default new Vuex.Store({
     changeSeachDom({
       commit
     }, flag) {
+      console.log(flag)
       commit('changeSeachDom', flag)
     },
-    getSearchListResult({
+    setSearchListResult({
       commit
     }, result) {
       console.log(result)
-      commit('getSearchListResult',result)
+      commit('setSearchListResult',result)
     }
   },
   getters: {
