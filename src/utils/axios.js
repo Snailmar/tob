@@ -12,6 +12,7 @@ axios.interceptors.request.use(config=>{
     Indicator.open({
         text:'Loading'
     })
+    console.log(config)
 return config
 },error=>{
     Toast('网络异常,稍后重试')

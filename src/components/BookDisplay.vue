@@ -1,4 +1,5 @@
 <template>
+<router-link to="audioplayer">
   <div :class="displayType" class="com-book-display flex">
     <div class="cbd-left">
       <div class="img">
@@ -12,6 +13,7 @@
       <p class="bookauthor txt-hide">我佛慈悲我佛慈悲我佛慈悲我佛慈悲我佛慈悲我佛慈悲我佛慈悲我佛慈悲</p>
     </div>
   </div>
+  </router-link>
 </template>
 
 <script>

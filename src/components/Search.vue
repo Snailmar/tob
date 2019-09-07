@@ -46,7 +46,7 @@ updated() {
       this.changeSearchList(true);
     },
     handleBlur() {
-      if (!this.keywords) {
+      if (!this.keywords&&!this.searchListResult) {
         this.changeSearchList(false);
       }
     },
@@ -62,7 +62,7 @@ updated() {
     ...mapActions(["changeSearchList", "saveKeywords", "setSearchListResult"])
   },
   computed: {
-    ...mapState(["showSearchList"])
+    ...mapState(["showSearchList","searchListResult"])
   },
   deactivated() {
     this.keywords=''

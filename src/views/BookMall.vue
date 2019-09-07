@@ -2,7 +2,8 @@
   <div class="view-bookmall flex1 flex column">
     <Search />
     <SearchList  v-if="showSearchList"/>
-    <div class="overflow-y flex1 " v-if="!showSearchList">
+    <div class="overflow-y flex1 " v-show="!showSearchList">
+      
       <mt-loadmore
         :top-method="loadTop"
         @top-status-change="handleTopChange"
@@ -44,6 +45,7 @@
           ></mt-spinner>
         </div>
       </mt-loadmore>
+
     </div>
   </div>
 </template>

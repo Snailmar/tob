@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import BookMall from './views/BookMall'
 import BookShelf from './views/BookShelf'
 import Mine from './views/Mine'
+import AudioPlayer from './views/AudioPlayer'
 Vue.use(Router)
 
 export default new Router({
@@ -40,6 +41,9 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/ReadDetail.vue')
+    },
+    {
+      path:'/audioplayer',name:'audioplayer',component:AudioPlayer
     }
   ]
 })
