@@ -1,11 +1,19 @@
+<!--
+ * @Author: vigorzhang
+ * @Date: 2019-09-06 22:14:01
+ * @LastEditors: vigorzhang
+ * @LastEditTime: 2019-11-07 14:15:20
+ * @Description: 首页入口
+ -->
 <template>
   <div class="view-home flex column f-algin f-between">
-    <keep-alive >
+    <!-- <keep-alive > -->
       <router-view ></router-view>
-    </keep-alive>
+    <!-- </keep-alive> -->
     <Tabbar ref="tabbar" />
   </div>
 </template>
+
 <script>
 // @ is an alias to /src
 import Tabbar from "@/components/Tabbar";

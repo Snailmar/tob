@@ -1,9 +1,14 @@
+<!--
+ * @Author: vigorzhang
+ * @Date: 2019-09-06 22:14:01
+ * @LastEditors: vigorzhang
+ * @LastEditTime: 2019-11-06 16:59:43
+ * @Description: 书城页面
+ -->
 <template>
   <div class="view-bookmall flex1 flex column">
     <Search />
-    <SearchList  v-if="showSearchList"/>
-    <div class="overflow-y flex1 " v-show="!showSearchList">
-      
+    <div class="overflow-y flex1 " >
       <mt-loadmore
         :top-method="loadTop"
         @top-status-change="handleTopChange"
@@ -58,7 +63,6 @@ import RowDisplay from "@/components/RowDisplay";
 import Catalog from "@/components/Catalog";
 import ToTop from "@/components/ToTop";
 import Search from "@/components/Search";
-import SearchList from "@/components/SearchList";
 import {mapState,mapActions} from 'vuex'
 export default {
   name: "bookmall",
@@ -78,8 +82,7 @@ export default {
     RowDisplay,
     Catalog,
     ToTop,
-    Search,
-    SearchList
+    Search
   },
   created() {
     document.title = "书城";
@@ -118,18 +121,14 @@ export default {
         this.$refs.loadmore.onTopLoaded();
       }, 1500);
     },
-    ...mapActions(['changeSearchList','saveKeywords','setSearchListResult'])
   },
   computed: {
-    ...mapState(['showSearchList','isShowSearchDom'])
   },
   activated() {
     document.title = "书城";
     
   },
   deactivated() {
-    this.changeSearchList(false)
-  this.setSearchListResult('')
   }
 };
 </script>

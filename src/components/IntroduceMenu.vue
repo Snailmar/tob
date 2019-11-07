@@ -1,3 +1,10 @@
+<!--
+ * @Author: vigorzhang
+ * @Date: 2019-09-05 21:38:51
+ * @LastEditors: vigorzhang
+ * @LastEditTime: 2019-11-05 22:31:09
+ * @Description: 
+ -->
 <template>
   <div class="com-introduceMenu flex1 flex column f-between">
     <div class="cim-nav flex f-between">
@@ -30,7 +37,7 @@
     <div class="cim-menuList flex1" v-if="tabFlag==2">
       <p class="cimm-cell txt-hide">01 只有改变才能看见未来</p>
     </div>
-    <ChapterList v-if="isShowChaperList" />
+    <ChapterList v-if="isShowChaperList"  :totalChapter='totalChapter'/>
   </div>
 </template>
 
@@ -41,7 +48,8 @@ export default {
     return {
       showIcon: true,
       tabFlag: 1 ,//1代表简介 2代表目录
-      isShowChaperList:false
+      isShowChaperList:false,
+      totalChapter:190
     };
   },
   components:{ChapterList},

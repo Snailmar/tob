@@ -1,19 +1,26 @@
+<!--
+ * @Author: vigorzhang
+ * @Date: 2019-09-05 21:38:51
+ * @LastEditors: vigorzhang
+ * @LastEditTime: 2019-11-06 17:49:44
+ * @Description: 搜索栏
+ -->
 <template>
   <div class="flex f-align search-com">
     <div class="com-search flex f-align flex1" id="com">
-      <span class="icon iconfont iconchazhao"></span>
+      <span class="icon iconfont iconchazhao" @click="handleSearch"></span>
       <input
         type="text"
         placeholder="请输入作者或书名"
         class="flex1 " id="inputKeywords"
-        v-model="keywords"
+        v-model="keyWords"
         @keyup.enter="handleSearch"
         @focus="handleFocus"
         @blur="handleBlur"
       />
-      <span class="icon iconfont iconsousuoguanbi" v-if="!!keywords" @click.stop="clearSearch"></span>
+      <span class="icon iconfont iconsousuoguanbi" v-if="!!keyWords" @click.stop="clearSearch"></span>
     </div>
-    <div v-if="showSearchList" @click.stop="cancleSearch" class="cancleBtn">取消</div>
+    <div  @click.stop="cancleSearch" class="cancleBtn" v-if="keyWords.trim()==''?false:true">取消</div>
   </div>
 </template>
 <script>
@@ -22,51 +29,42 @@ export default {
   name:'search',
   data() {
     return {
-      keywords:''
+      keyWords:''
     };
   },
-  props: {},
+  props: {
+    keywords:{
+      default:''
+    }
+  },
   mounted() {
+    this.keyWords=this.keywords
     },
 updated() {
 
 },
   methods: {
     handleSearch() {
-      if (!this.keywords) return;
-      this.$axios
-        .get("/nav")
-        .then(result => {
-          this.setSearchListResult(result);
-        })
-        .catch(err => {});
-      this.saveKeywords(this.keywords);
+      if (!this.keyWords.trim()) return;
+      // if(document.title=='书城'){
+        this.$router.push('/searchlist?keywords='+this.keyWords)
+      // }
     },
     handleFocus() {
-      this.changeSearchList(true);
     },
     handleBlur() {
-      if (!this.keywords&&!this.searchListResult) {
-        this.changeSearchList(false);
-      }
     },
     cancleSearch() {
-      this.changeSearchList(false);
-      this.keywords = "";
-      this.saveKeywords("");
+      this.keyWords = "";
     },
     clearSearch() {
-      this.keywords = "";
-      this.saveKeywords("");
-    },
-    ...mapActions(["changeSearchList", "saveKeywords", "setSearchListResult"])
+      this.keyWords = "";
+    }
   },
   computed: {
-    ...mapState(["showSearchList","searchListResult"])
   },
   deactivated() {
     this.keywords=''
-    this.setSearchListResult('')//清空搜索结果
   },
 };
 </script>

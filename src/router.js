@@ -1,10 +1,16 @@
+/*
+ * @Author: vigorzhang
+ * @Date: 2019-08-27 19:34:12
+ * @LastEditors: vigorzhang
+ * @LastEditTime: 2019-11-07 15:58:51
+ * @Description: 
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import BookMall from './views/BookMall'
 import BookShelf from './views/BookShelf'
 import Mine from './views/Mine'
-import AudioPlayer from './views/AudioPlayer'
 Vue.use(Router)
 
 export default new Router({
@@ -43,7 +49,18 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/ReadDetail.vue')
     },
     {
-      path:'/audioplayer',name:'audioplayer',component:AudioPlayer
+      path:'/audioplayer',name:'audioplayer',component:() => import(/* webpackChunkName: "about" */ './views/AudioPlayer.vue')
+    },
+    ,
+    {
+      path:'/readpage',name:'readpage',component:() => import(/* webpackChunkName: "about" */ './views/ReaderPage.vue')
+    }
+    ,
+    {
+      path:'/searchlist',name:'searchlist',component:() => import(/* webpackChunkName: "about" */ './views/SearchList.vue')
+    },
+    {
+      path:'/login',name:'login',component:() => import(/* webpackChunkName: "about" */ './views/Login.vue')
     }
   ]
 })

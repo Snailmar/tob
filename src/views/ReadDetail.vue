@@ -1,3 +1,10 @@
+<!--
+ * @Author: vigorzhang
+ * @Date: 2019-09-06 22:14:01
+ * @LastEditors: vigorzhang
+ * @LastEditTime: 2019-11-05 22:23:47
+ * @Description: 阅读详情页
+ -->
 <template>
   <div class="view-readDetail flex column">
     <div class="vr-top clearfix">
@@ -10,8 +17,7 @@
         </div>
       </div>
     </div>
-
-    <IntroduceMenu/>
+    <IntroduceMenu />
   </div>
 </template>
 

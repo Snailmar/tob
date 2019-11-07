@@ -1,3 +1,10 @@
+<!--
+ * @Author: vigorzhang
+ * @Date: 2019-09-06 22:14:01
+ * @LastEditors: vigorzhang
+ * @LastEditTime: 2019-11-06 16:16:48
+ * @Description: 书架页面
+ -->
 <template>
   <div class="flex1  view-bookshelf overflow-y">
        <mt-loadmore
@@ -8,7 +15,7 @@
       :bottom-all-loaded="allLoaded"
       :auto-fill="false"
       ref="loadmore"
-    >
+    > 
     <div
       class="book-wrap"
       v-for="item of bookList"
@@ -181,15 +188,12 @@ export default {
         this.handleTopChange("loadingEnd"); //数据加载完毕 修改状态码
         this.$refs.loadmore.onTopLoaded();
       }, 1500);
-    },
-    ...mapActions(['changeSeachDom'])
+    }
   },
   activated() {
     document.title = "书架";
-this.changeSeachDom(false)
   },
   deactivated() {
-    console.log()
       this.checkList = [];
           this.showCheckbox = false;
         document.querySelector('.com-tabbar').style.display='block'//兼容ios的布局bug

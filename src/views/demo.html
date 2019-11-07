@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html id='html' lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta id="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
+          name="viewport">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta name="wap-font-scale" content="no">
+    <meta content="telephone=no" name="format-detection">
+    <title>登录</title>
+    <link rel="stylesheet" href="<%=path%>/css/local/base.css">
+    <link rel="stylesheet" href="<%=path%>/css/local/iconfont.css">
+    <script type="text/javascript" src="<%=path%>/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="<%=path%>/js/local/adaptive.js"></script>
+    <script type="text/javascript" src="<%=path%>/js/local/2014ver/public.js?version=${versionno}"></script>
+    <script type="text/javascript" src="<%=path%>/js/sight/base64.js"></script>
+    <script type="text/javascript">
+        window['adaptive'].desinWidth = 720; // 设计图宽度
+        window['adaptive'].baseFont = 24; // 没有缩放时的字体大小
+        window['adaptive'].maxWidth = 720; // 页面最大宽度 默认540
+        window['adaptive'].scaleType = 1; // viewport缩放 默认1
+        window['adaptive'].init(); // 调用初始化方法
+    </script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            padding: 0 .85rem;
+            font-size: .28rem
+        }
+
+        input {
+            background: transparent;
+            font-size: .32rem;
+        }
+
+        .border {
+            width: 100%;
+            height: 0.82rem;
+            /* box-shadow: 0px 1px .4rem 0px rgba(0, 0, 0, 0.5); */
+            border-radius: .4rem;
+            border: 2px solid #979797;
+            color: #323232;
+
+        }
+
+        .view-login {
+            margin-top: 2.34rem;
+            width: 100%;
+            position: relative;
+        }
+
+        .phoneNum {
+            margin-bottom: .3rem;
+            padding: 0 .32rem;
+            line-height: .42rem;
+        }
+
+        .validNum {
+            padding: 0 .32rem;
+            width: 3.2rem;
+            height: .82rem;
+            line-height: .42rem;
+        }
+
+        .getCode {
+            color: #0091FF;
+            height: .62rem;
+            line-height: .62rem;
+            text-align: center;
+            width: 1.8rem;
+            border-left: #D8D8D8 solid 2px;
+        }
+
+        .loginBtn {
+            background: #01813B;
+            color: #fff;
+            width: 100%;
+            height: .86rem;
+            line-height: .86rem;
+            border-radius: .44rem;
+            text-align: center;
+        }
+
+        .flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .grey {
+            color: #9B9B9B;
+        }
+
+        .showMessage {
+            color: #ef4f4f;
+            height: .86rem;
+            line-height: .86rem;
+            text-align: center;
+        }
+
+        input::-webkit-input-placeholder {
+            color: #9B9B9B;
+            font-size: .28rem;
+
+        }
+        .p_message{
+            position: absolute;
+            top: 4.54rem!important;
+    left: 50%!important;
+    transform: translateX(-50%);
+    color: #ef4f4f;
+        }
+    </style>
+</head>
+<body style="font-size: 0.24rem;">
+<div class="view-login">
+    <input type="tel" class="phoneNum border" value="${userPhone}" placeholder="手机号码" maxlength="11" onfocus="handleFocus()">
+    <div class="border flex">
+        <input type="tel" class="validNum" placeholder="验证码" maxlength="6" onfocus="handleFocus()">
+        <span class="getCode" onclick="handleFocus()">获取验证码</span>
+    </div>
+    <div class="showMessage"></div>
+    <div class="loginBtn">立刻登录</div>
+</div>
+
+<script>
+    var timer = null;
+    var flag = false;//防止获取验证码重复点击
+    var loginFlag=false;//防止登录重复点击
+    //设置倒计时
+    function setCountDown(obj, time, phoneNum) {
+        if (flag) {
+            return;
+        }
+        flag = true;
+        // 在此处发送请求获取验证码
+        var data = {"userPhone": phoneNum};
+        $.ajax({
+            url: "<%=path%>/account/sendCode.action",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(data),
+            dataType: 'json',
+            timeout: 20000,
+            type: 'POST',
+            error: function () {
+                showMessage('网络不给力，请稍后再试...')
+                clearInterval(timer)
+                    obj.html('获取验证码').removeClass('grey');
+                    setTimeout(()=>{
+                    flag = false;
+                    },1500)
+            },
+            success:  function(_result) {
+                showMessage((_result.code == "0000") ?(_result.data ? "获取验证码成功" : "获取验证码失败") : "获取验证码失败")
+                if(!_result.data){
+                    clearInterval(timer)
+                    obj.html('获取验证码').removeClass('grey');
+                    setTimeout(()=>{
+                    flag = false;
+                    },1500)
+                }
+            }
+        });
+        obj.addClass('grey').html(time + 's');
+        timer = setInterval(function () {
+            time--;
+            obj.html(time + 's');
+            if (time == 0) {
+                obj.html('获取验证码').removeClass('grey');
+                flag = false;
+                clearInterval(timer)
+            }
+        }, 1000)
+    }
+    //获取验证码倒计时
+    $('.getCode').on('click', function () {
+        if($(this).html()=='获取验证码'){
+            $('.validNum').val('')
+        }
+        var phoneNum = $('.phoneNum').val();//手机号
+        if (!checkPhone(phoneNum)) {
+            return;
+        }
+        setCountDown($(this), 60, phoneNum);
+    });
+
+        // 登录按钮
+    $('.loginBtn').on('click', function () {
+        if(loginFlag){//防止重复点击
+            return
+        }
+        loginFlag=true;
+        setTimeout(()=>{loginFlag=false},2000)//两秒后可以再次点击
+        // 登录按钮对手机和验证码进行验证
+        var phoneNum = $('.phoneNum').val().trim();//手机号
+        var validNum = $('.validNum').val().trim();//验证码
+        if (!checkPhone(phoneNum) || !checkValid(validNum)) {
+            return;
+        }
+        var aesPhoneNum = encodeURI(new Base64().encode(phoneNum));
+        // 此处进行验证码的验证
+        window.location.href = "<%=path%>/account/redeemLoginByCheck.action?userPhone=" + aesPhoneNum +
+            "&corpId=${corpId}&corpName=${corpName}&loginIp=${loginIp}&loginType=${loginType}"
+            <c:if test="${not empty batchNo}"> + "&batchNo=${batchNo}"</c:if>
+            + "&code=" + validNum;
+    });
+    function handleFocus() {
+        $('.showMessage').html('')
+    }
+    function checkPhone(phoneNum) {
+        if (!phoneNum) {
+            showMessage('请输入手机号码')
+            return false
+        }
+        else if (!/^1[3456789]\d{9}$/.test(phoneNum)) {
+            showMessage('手机号码错误,请重新输入')
+            return false
+        }
+        return true
+    }
+    function checkValid(validNum) {
+        if (!validNum) {
+            showMessage('请输入验证码')
+            return false
+        }
+        else if (!/\d{6}$/.test(validNum)) {
+            showMessage('无效的验证码,请重新输入')
+            return false
+        }
+        return true
+    }
+
+</script>
+</body>
+</html>

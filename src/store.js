@@ -1,54 +1,28 @@
+/*
+ * @Author: vigorzhang
+ * @Date: 2019-09-06 22:14:01
+ * @LastEditors: vigorzhang
+ * @LastEditTime: 2019-11-06 16:57:56
+ * @Description: 
+ */
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { stat } from 'fs';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    showSearchList: false,
-    keywords: '',
-    isShowSearchDom: true,
-    searchListResult: null//保存搜索结果
+    readerContent:''//阅读内容
   },
-  mutations: {
-    changeSearchList(state, flag) {
-      state.showSearchList = flag
-      if(!flag){
-        state.searchListResult=''
-      }
-    },
-    saveKeywords(state, keywords) {
-      state.keywords = keywords
-    },
-    changeSeachDom(state, flag) {
-      state.isShowSearchDom = flag
-    },
-    setSearchListResult(state, result) {
-      state.searchListResult = result
+  mutations: { 
+    setReaderContent(state,res){
+state.readerContent+=res
     }
   },
   actions: {
-    changeSearchList({
-      commit
-    }, flag) {
-      commit('changeSearchList', flag)
-    },
-    saveKeywords({
-      commit
-    }, keywords) {
-      commit('saveKeywords', keywords)
-    },
-    changeSeachDom({
-      commit
-    }, flag) {
-      console.log(flag)
-      commit('changeSeachDom', flag)
-    },
-    setSearchListResult({
-      commit
-    }, result) {
-      console.log(result)
-      commit('setSearchListResult',result)
+    setReaderContent({commit},res){
+commit('setReaderContent',res)
     }
   },
   getters: {

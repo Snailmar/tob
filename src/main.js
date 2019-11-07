@@ -1,3 +1,10 @@
+/*
+ * @Author: vigorzhang
+ * @Date: 2019-09-05 21:38:51
+ * @LastEditors: vigorzhang
+ * @LastEditTime: 2019-11-07 16:54:58
+ * @Description: 
+ */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -5,20 +12,42 @@ import './utils/axios.js'
 import store from './store'
 import 'swiper/dist/css/swiper.css'
 import 'animate.css'
-import FastClick from 'fastclick'//清除300毫秒延时
+import FastClick from 'fastclick' //清除300毫秒延时
+import storage from "./utils/storage";
 if ('addEventListener' in document) {
-  document.addEventListener('DOMContentLoaded', function() {
-      FastClick.attach(document.body);
+  document.addEventListener('DOMContentLoaded', function () {
+    FastClick.attach(document.body);
   }, false);
 }
 Vue.config.productionTip = false
 console.log(process.env.VUE_APP_URL)
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 Vue.use(VueAwesomeSwiper)
-import {Checklist,Loadmore ,Spinner} from 'mint-ui';
+import {
+  Checklist,
+  Loadmore,
+  Spinner,
+  Field
+} from 'mint-ui';
 Vue.component(Checklist.name, Checklist);
 Vue.component(Loadmore.name, Loadmore);
-Vue.component(Spinner.name, Spinner)
+Vue.component(Spinner.name, Spinner);
+Vue.component(Field.name, Field);
+
+router.beforeEach((to, from, next) => {
+  let public_path = ['/login']; //公共访问的数据路径（不需要登录验证的路径）
+  var token = storage.getStorage('ACCESS_TOKEN'); //拿到token及登录信息
+  console.log(to.path)
+  if (public_path.indexOf(to.path) == -1) { //当访问不需要权限的页面时
+    if (token) {
+      next()
+    } else {
+      next('/login')
+    }
+  } else {
+    next()
+  }
+})
 new Vue({
   router,
   store,

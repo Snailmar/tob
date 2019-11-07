@@ -1,3 +1,10 @@
+<!--
+ * @Author: vigorzhang
+ * @Date: 2019-09-06 22:14:01
+ * @LastEditors: vigorzhang
+ * @LastEditTime: 2019-11-06 16:16:17
+ * @Description: 我的页面
+ -->
 <template>
   <div class="flex1 view-mine overflow-y">
     <div class="mine-top flex f-align">
@@ -8,7 +15,6 @@
         <p class="mine-motto txt-hide">大家好才是真的好</p>
       </div>
     </div>
-
     <div class="mine-menu">
       <div class="mine-cell flex f-align">
         <span class="icon iconfont iconlishi"></span>
@@ -31,12 +37,9 @@ export default {
     document.title = "我的";
   },
   methods: {
-    ...mapActions(['changeSeachDom'])
-
       },
   activated() {
       document.title = "我的";
-      this.changeSeachDom(false)
   }
 };
 </script>
@@ -78,9 +81,9 @@ export default {
       }
 }
       .mine-menu {
-        border-top: 0.3rem solid #ededed;
+        border-top: 0.15rem solid #ededed;
         background: #fff;
-        padding: 0 0.3rem;
+        padding: 0 0.15rem;
         font-size: 0.32rem;
         color: #666;
         .mine-cell{

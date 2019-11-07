@@ -1,11 +1,17 @@
+<!--
+ * @Author: vigorzhang
+ * @Date: 2019-09-05 21:38:51
+ * @LastEditors: vigorzhang
+ * @LastEditTime: 2019-11-05 22:30:31
+ * @Description: 选集列表
+ -->
 <template>
   <div class="com-chapterlist">
     <div class="ccl-mask" @click="hideMask" ref="mask"></div>
-
     <div class="ccl-wrap animated bounceInUp" ref="cclWrap">
       <div class="ccl-title">-选集-</div>
       <ul class="ccl-list flex">
-        <li class="ccl-cell" v-for="(item,ind) of list" :key="ind"><div @click="cellClick(ind)" :class="{activeColor:index==ind}">1-50</div></li>
+        <li class="ccl-cell" v-for="(item,ind) of list" :key="ind"><div @click="cellClick(ind)" :class="{activeColor:index==ind}">{{item}}</div></li>
        
       </ul>
       <div class="ccl-close" @click="hideMask">关闭</div>
@@ -17,16 +23,19 @@
 export default {
   data() {
     return {
-        list:['1-50','51-100','101-150','151-200'],
+        list:[],
         index:''
     };
   },
   mounted() {
     this.$refs.mask.ontouchmove=(e)=>{
       e.preventDefault();
-      
-    }
+    };
+    this.getList();
   },
+  props:[
+    'totalChapter'
+  ],
   methods: {
       hideMask(){
         this.$refs.cclWrap.classList.remove('bounceInUp')
@@ -37,7 +46,24 @@ export default {
       },
       cellClick(ind){
           this.index=ind
-        
+      },
+      getList(){
+        console.log(this.totalChapter)
+        var mod=this.totalChapter%50
+        var mul=parseInt(this.totalChapter/50)
+        if(mul>=1){
+          for(let i=1;i<=mul;i++){
+            if(i==mul){
+              this.list.push(1+50*(i-1)+'-'+this.totalChapter)
+              return;
+            }
+            this.list.push(1+50*(i-1)+'-'+i*50)
+          }
+        }else{
+          this.list.push('1-'+this.totalChapter)
+        }
+       
+      
       }
   },
 };
