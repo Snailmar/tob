@@ -2,7 +2,7 @@
  * @Author: vigorzhang
  * @Date: 2019-08-27 19:34:12
  * @LastEditors: vigorzhang
- * @LastEditTime: 2019-11-07 22:55:38
+ * @LastEditTime: 2019-11-11 10:32:29
  * @Description: 
  */
 import Vue from 'vue'
@@ -49,7 +49,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/ReadDetail.vue')
     },
     {
-      path:'/audioplayer',name:'audioplayer',component:() => import(/* webpackChunkName: "about" */ './views/AudioPlayer.vue')
+      path:'/audiopage',name:'audiopage',component:() => import(/* webpackChunkName: "about" */ './views/AudioPage.vue')
     },
     ,
     {
@@ -64,6 +64,9 @@ export default new Router({
     },
     {
       path:'/readerpage',name:'readerpage',component:() => import(/* webpackChunkName: "about" */ './views/ReaderPage.vue')
+    },
+    {
+      path:'/videopage',name:'videopage',component:() => import(/* webpackChunkName: "about" */ './views/VideoPage.vue')
     }
   ]
 })

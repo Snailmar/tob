@@ -2,7 +2,7 @@
  * @Author: vigorzhang
  * @Date: 2019-09-05 21:38:51
  * @LastEditors: vigorzhang
- * @LastEditTime: 2019-11-05 22:31:09
+ * @LastEditTime: 2019-11-11 08:20:34
  * @Description: 
  -->
 <template>
@@ -26,7 +26,7 @@
       <div class="cim-copyright">&copy; 2012-2019 联通沃悦读 版权所有</div>
     </div>
     <div class="cimi-bottom flex" v-if="tabFlag==1">
-      <div class="addToshelf">加入书架</div>
+      <div class="addToshelf">+加入书架</div>
       <div class="continueReading flex1">接上次读</div>
     </div>
 

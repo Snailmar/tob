@@ -1,5 +1,5 @@
 <template>
-<router-link to="audioplayer">
+<router-link to="audiopage">
   <div :class="displayType" class="com-book-display flex">
     <div class="cbd-left">
       <div class="img">

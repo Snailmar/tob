@@ -2,7 +2,7 @@
  * @Author: vigorzhang
  * @Date: 2019-09-06 22:14:01
  * @LastEditors: vigorzhang
- * @LastEditTime: 2019-11-10 21:54:11
+ * @LastEditTime: 2019-11-11 09:15:12
  * @Description: 书架页面
  -->
 <template>
@@ -18,6 +18,11 @@
       :ref="item.id"
     >
       <img src="../assets/banner/bookshelf.jpg" alt class="bookimg" />
+      <!-- icon判断切换 -->
+      <!-- 
+      <span class="iconfont icontingshu"></span>
+      <span class="iconfont iconbofang"></span>
+      -->
       <!-- <img :src="item.img" alt=""> -->
       <div class="bookname txt-hide2">{{item.name}}</div>
       <label class="checkWrap" v-if="showCheckbox">
@@ -210,6 +215,14 @@ export default {
       height: 2.48rem;
       margin: 0 auto;
       box-shadow: 0px 2px 8px rgba(197, 197, 197, 0.35);
+    }
+    .iconfont{
+      font-size: .6rem;
+      color: #fff;
+      position: absolute;
+      left: 50%;
+      top: 1.1rem;
+      transform: translateX(-50%)
     }
     .bookname {
       font-size: 0.28rem;

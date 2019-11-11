@@ -2,7 +2,7 @@
  * @Author: vigorzhang
  * @Date: 2019-09-11 08:35:06
  * @LastEditors: vigorzhang
- * @LastEditTime: 2019-11-10 21:13:47
+ * @LastEditTime: 2019-11-11 10:24:32
  * @Description: 阅读页面
  -->
 <template>
@@ -82,8 +82,13 @@
       :class="showChapterList?'slideInLeft':chapterListOut?'slideOutLeft':''"
       ref="sideMenu"
     >
-      <div class="smTop" :style="ndMode=='night'?{background:'#202020',color:'#aaa'}:''">
-        <span class="icon iconfont iconyueduye-mulu"></span>
+      <div class="smTop flex" :style="ndMode=='night'?{background:'#202020',color:'#aaa'}:''" >
+        <span class="icon iconfont iconyueduye-mulu" style="margin-right:1rem"></span>
+        <span
+          class="icon iconfont iconzhengxu"
+          @click="handleSort"
+          :class="sortFlag?'rotate180':''"
+        ></span>
       </div>
       <ul
         v-infinite-scroll="loadChapter"
@@ -93,11 +98,11 @@
         :style="ndMode=='night'?{background:'#181818',color:'#aaa'}:''"
       >
         <li class="txt-hide" v-for="(item,ind) in chapterList" :key="ind">{{ item }}</li>
-        <li v-show="loadingChapter" class="flex">
+        <li v-show="loadingChapter" class="flex" style="border-bottom:none">
           正在加载
           <mt-spinner type="triple-bounce" color="#00ccff" :size="20"></mt-spinner>
         </li>
-        <span v-show="loadingChapterAll">已全部加载</span>
+        <span v-show="loadingChapterAll" style="border-bottom:none">已全部加载</span>
       </ul>
     </div>
   </div>
@@ -138,7 +143,8 @@ export default {
       chapterListOut: false, //控制章节列表页滑出效果
       showUpTools: false, //控制上工具栏显示
       showBotTools: false, //控制下工具栏显示
-      screenHeight: "" //屏幕高度
+      screenHeight: "", //屏幕高度
+      sortFlag: false //正逆序标记
     };
   },
   computed: {},
@@ -222,6 +228,7 @@ export default {
     //无限加载章节目录
     loadChapter() {
       this.loadingChapter = true; //加载前要置为true
+      if(this.chapterList[this.chapterList.length - 1]>100)return;
       setTimeout(() => {
         let last = this.chapterList[this.chapterList.length - 1];
         for (let i = 1; i <= 40; i++) {
@@ -292,8 +299,14 @@ export default {
       e.preventDefault();
     },
     //上一章下一章切换
-    handleChapter(flag){
-        
+    handleChapter(flag) {},
+    //正序逆序章节
+    handleSort(){
+      this.sortFlag =! this.sortFlag;
+      this.sortChapterList()
+    },
+    sortChapterList() {
+      
     }
   }
 };
@@ -427,12 +440,16 @@ export default {
   overflow-y: auto;
   height: 100%;
   padding-right: 0.2rem;
+  padding-bottom: 1rem;
   li {
     padding: 0 0.2rem 0 0.4rem;
     line-height: 0.7rem;
-    border-bottom: 1px dashed #ccc;
+      border-bottom: 1px dashed #ccc;
     color: #999;
     font-size: 0.28rem;
   }
+}
+.rotate180 {
+  transform: rotateX(180deg);
 }
 </style>

@@ -2,15 +2,15 @@
  * @Author: vigorzhang
  * @Date: 2019-08-27 19:42:09
  * @LastEditors: vigorzhang
- * @LastEditTime: 2019-11-07 21:22:20
+ * @LastEditTime: 2019-11-11 14:10:46
  * @Description: 
  */
 import Vue from 'vue'
 import axios from 'axios'
 import {Toast,Indicator} from 'mint-ui'
 // axios.defaults.baseURL='/api'//跨域配置项的baseURL,先设置vue.config.js中的代理地址
-// axios.defaults.baseURL=process.env.VUE_APP_URL;
-axios.defaults.baseURL='https://www.easy-mock.com/mock/5d2aaeeac03c984ca428b5dd/example'
+axios.defaults.baseURL=process.env.VUE_APP_URL;
+// axios.defaults.baseURL='https://www.easy-mock.com/mock/5d2aaeeac03c984ca428b5dd/example'
 axios.defaults.timeout=5000;
 Vue.prototype.$axios=axios;
 

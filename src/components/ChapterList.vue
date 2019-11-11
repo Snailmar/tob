@@ -2,13 +2,13 @@
  * @Author: vigorzhang
  * @Date: 2019-09-05 21:38:51
  * @LastEditors: vigorzhang
- * @LastEditTime: 2019-11-05 22:30:31
+ * @LastEditTime: 2019-11-11 08:19:09
  * @Description: 选集列表
  -->
 <template>
   <div class="com-chapterlist">
     <div class="ccl-mask" @click="hideMask" ref="mask"></div>
-    <div class="ccl-wrap animated bounceInUp" ref="cclWrap">
+    <div class="ccl-wrap animated slideInUp" ref="cclWrap">
       <div class="ccl-title">-选集-</div>
       <ul class="ccl-list flex">
         <li class="ccl-cell" v-for="(item,ind) of list" :key="ind"><div @click="cellClick(ind)" :class="{activeColor:index==ind}">{{item}}</div></li>
@@ -38,7 +38,7 @@ export default {
   ],
   methods: {
       hideMask(){
-        this.$refs.cclWrap.classList.remove('bounceInUp')
+        this.$refs.cclWrap.classList.remove('slideInUp')
           this.$refs.cclWrap.classList.add('fadeOutDown')
             setTimeout(()=>{
               this.$parent.isShowChaperList=false;

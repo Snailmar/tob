@@ -2,7 +2,7 @@
  * @Author: vigorzhang
  * @Date: 2019-09-05 21:38:51
  * @LastEditors: vigorzhang
- * @LastEditTime: 2019-11-08 15:50:51
+ * @LastEditTime: 2019-11-11 11:21:17
  * @Description: 
  */
 import Vue from 'vue'
@@ -14,6 +14,15 @@ import 'swiper/dist/css/swiper.css'
 import 'animate.css'
 import FastClick from 'fastclick' //清除300毫秒延时
 import storage from "./utils/storage";
+import VueAwesomeSwiper from 'vue-awesome-swiper';
+import crypto from 'crypto'
+const md5=crypto.createHash('md5')
+const appid='10000001';
+// const timestamp=new Date().getTime();
+const timestamp=new Date().getTime();
+const appsecret='7ac5b9611734'
+md5.update(appid+appsecret+timestamp)
+const sign=md5.digest('hex')
 if ('addEventListener' in document) {
   document.addEventListener('DOMContentLoaded', function () {
     FastClick.attach(document.body);
@@ -21,7 +30,6 @@ if ('addEventListener' in document) {
 }
 Vue.config.productionTip = false
 console.log(process.env.VUE_APP_URL)
-import VueAwesomeSwiper from 'vue-awesome-swiper';
 Vue.use(VueAwesomeSwiper)
 import {
   Checklist,
@@ -49,8 +57,14 @@ Vue.use(InfiniteScroll);
 //     next()
 //   }
 // })
-new Vue({
+const vm= new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
+vm.$axios.get('/tobservice/rest/app/auth/'+appid+'/'+timestamp+'/'+sign).then((result) => {
+  console.log(result)
+}).catch((err) => {
+  
+});
