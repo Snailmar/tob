@@ -6,7 +6,7 @@ module.exports = {
     lintOnSave: false, // 关闭eslint
     productionSourceMap: true, // 生产环境下css 分离文件
     devServer: { // 配置服务器
-        // host:'127.0.0.1',
+        host:'localhost',
         port: 8081,
         open: true,
         // https: false,
@@ -16,16 +16,16 @@ module.exports = {
         },
         disableHostCheck:true,
         //跨域设置
-        // proxy: {
-        //     '/api': {
-        //         target: '', //要代理的后台地址
-        //         ws: true,
-        //         changeOrigin: true,
-        //         pathRewrite: {
-        //             '^/api': ''
-        //         }
-        //     }
-        // }
+        proxy: {
+            '/api': {
+                target: 'http://192.168.100.31:8090/tob', //要代理的后台地址
+                ws: true,
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
+            }
+        }
     },
     configureWebpack: config => {
         if (process.env.NODE_ENV === 'production') {

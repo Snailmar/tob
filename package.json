@@ -5,12 +5,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "start": "node index.js",
     "devbuild": "vue-cli-service build --mode development"
   },
   "dependencies": {
     "animate.css": "^3.7.2",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
+    "crypto": "^1.0.1",
     "fastclick": "^1.0.6",
     "hls.js": "^0.12.4",
     "mint-ui": "^2.2.13",
