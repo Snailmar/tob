@@ -2,22 +2,13 @@
  * @Author: vigorzhang
  * @Date: 2019-09-06 22:14:01
  * @LastEditors: vigorzhang
- * @LastEditTime: 2019-11-06 16:59:43
+ * @LastEditTime: 2019-11-08 15:52:22
  * @Description: 书城页面
  -->
 <template>
   <div class="view-bookmall flex1 flex column">
     <Search />
     <div class="overflow-y flex1 " >
-      <mt-loadmore
-        :top-method="loadTop"
-        @top-status-change="handleTopChange"
-        :bottom-method="loadBottom"
-        @bottom-status-change="handleBottomChange"
-        :bottom-all-loaded="allLoaded"
-        :auto-fill="false"
-        ref="loadmore"
-      >
         <Banner />
         <Nav />
         <!-- <div v-for="(item,ind) in list" :key="ind">{{item}}</div> -->
@@ -26,31 +17,9 @@
         <Catalog :title="'书库'" />
         <ToTop />
 
-        <div slot="top" class="mint-loadmore-top flex f-center f-align">
-          <span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">↓</span>
-          <span v-show="topStatus=='pull'">下拉更新</span>
-          <span v-show="topStatus=='loading'">更新中...</span>
-          <span v-show="topStatus=='drop'">释放更新</span>
-          <mt-spinner v-show="topStatus == 'loading'" class="topSpinner" color="#01813b"></mt-spinner>
-        </div>
+       
         <div v-if="allLoaded" class="loadDone">没有更多数据了</div>
-        <div slot="bottom" class="mint-loadmore-bottom flex f-center">
-          <span
-            v-show="bottomStatus !== 'loading'"
-            :class="{ 'is-rotate': bottomStatus === 'drop' }"
-          >↑</span>
-          <span v-show="bottomStatus=='pull'">上拉加载更多</span>
-          <span v-show="bottomStatus=='loading'">加载中</span>
-          <span v-show="bottomStatus=='drop'">释放加载更多</span>
-          <mt-spinner
-            v-show="bottomStatus == 'loading'"
-            class="bottomSpinner"
-            color="#01813b"
-            type="triple-bounce"
-          ></mt-spinner>
-        </div>
-      </mt-loadmore>
-
+       
     </div>
   </div>
 </template>
@@ -86,6 +55,7 @@ export default {
   },
   created() {
     document.title = "书城";
+    // console.log(this.$route)
   },
   methods: {
     handleBottomChange(status) {

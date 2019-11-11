@@ -2,20 +2,11 @@
  * @Author: vigorzhang
  * @Date: 2019-09-06 22:14:01
  * @LastEditors: vigorzhang
- * @LastEditTime: 2019-11-06 16:16:48
+ * @LastEditTime: 2019-11-10 21:54:11
  * @Description: 书架页面
  -->
 <template>
-  <div class="flex1  view-bookshelf overflow-y">
-       <mt-loadmore
-      :top-method="loadTop"
-      @top-status-change="handleTopChange"
-      :bottom-method="loadBottom"
-      @bottom-status-change="handleBottomChange"
-      :bottom-all-loaded="allLoaded"
-      :auto-fill="false"
-      ref="loadmore"
-    > 
+  <div class="flex1 view-bookshelf overflow-y">
     <div
       class="book-wrap"
       v-for="item of bookList"
@@ -38,32 +29,20 @@
           @click="handleSelect($event,item.id)"
           style="visibility:hidden"
         />
-        <span class="iconfont iconziyuan1 selectedIcon"  :class="{sltCur:checkList.indexOf(item.id)>=0}"></span>
+        <span
+          class="iconfont iconziyuan1 selectedIcon"
+          :class="{sltCur:checkList.indexOf(item.id)>=0}"
+        ></span>
       </label>
     </div>
     <div class="clearfix"></div>
-    <div slot="top" class="mint-loadmore-top flex f-center f-align" >
-        <span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">↓</span>
-        <span v-show="topStatus=='pull'">下拉更新</span>
-        <span v-show="topStatus=='loading'">更新中...</span>
-        <span v-show="topStatus=='drop'">释放更新</span>
-        <mt-spinner v-show="topStatus == 'loading'"  class="topSpinner" color='#01813b'></mt-spinner>
-    </div>
-      <div v-if="allLoaded" class="loadDone">没有更多数据了</div>
-      <div slot="bottom" class="mint-loadmore-bottom flex f-center">
-        <span
-          v-show="bottomStatus !== 'loading'"
-          :class="{ 'is-rotate': bottomStatus === 'drop' }"
-        >↑</span>
-         <span v-show="bottomStatus=='pull'">上拉加载更多</span>
-        <span v-show="bottomStatus=='loading'">加载中</span>
-        <span v-show="bottomStatus=='drop'">释放加载更多</span>
-        <mt-spinner v-show="bottomStatus == 'loading'" class="bottomSpinner" color='#01813b' type='triple-bounce' ></mt-spinner>
-        
-      </div>
-    </mt-loadmore>
-    <div class="delSelected" v-if="showCheckbox" @click="handleDel">{{checkList.length==0?"完成":"删除"}}</div>
 
+    <div v-if="allLoaded" class="loadDone">没有更多数据了</div>
+    <div
+      class="delSelected"
+      v-if="showCheckbox"
+      @click="handleDel"
+    >{{checkList.length==0?"完成":"删除"}}</div>
   </div>
 </template>
 
@@ -71,7 +50,7 @@
 var timer = null;
 const delayTime = 700;
 import { MessageBox } from "mint-ui";
-import {mapActions} from 'vuex'
+import { mapActions } from "vuex";
 export default {
   name: "boookshelf",
   data() {
@@ -80,10 +59,10 @@ export default {
       checkList: [],
       checked: true,
       showCheckbox: false,
-         topStatus: "",
+      topStatus: "",
       bottomStatus: "",
       allLoaded: false,
-      pageNum:1
+      pageNum: 1
     };
   },
   created() {
@@ -105,7 +84,7 @@ export default {
         this.showCheckbox = true;
         //将第一个选中的id推入数组
         this.checkList.push(id);
-        document.querySelector('.com-tabbar').style.display='none'//兼容ios的布局bug
+        document.querySelector(".com-tabbar").style.display = "none"; //兼容ios的布局bug
       }, delayTime);
     },
     getMove() {
@@ -124,31 +103,29 @@ export default {
       }
     },
     handleDel() {
-        if(this.checkList.length==0) {
-             this.showCheckbox = false;
-        document.querySelector('.com-tabbar').style.display='block'//兼容ios的布局bug
+      if (this.checkList.length == 0) {
+        this.showCheckbox = false;
+        document.querySelector(".com-tabbar").style.display = "block"; //兼容ios的布局bug
         return;
-        }
+      }
       //删除按钮
       MessageBox.confirm("确定删除?")
         .then(result => {
-         var len=this.bookList.length
-         while(len--){
-             if(this.checkList.indexOf(this.bookList[len].id)!=-1){
-                 this.bookList.splice(len,1)
-             }
-         }
+          var len = this.bookList.length;
+          while (len--) {
+            if (this.checkList.indexOf(this.bookList[len].id) != -1) {
+              this.bookList.splice(len, 1);
+            }
+          }
           //发送请求到后端将数据删除
           this.checkList = [];
           this.showCheckbox = false;
-        document.querySelector('.com-tabbar').style.display='block'//兼容ios的布局bug
-
+          document.querySelector(".com-tabbar").style.display = "block"; //兼容ios的布局bug
         })
         .catch(err => {
           this.checkList = [];
           this.showCheckbox = false;
-        document.querySelector('.com-tabbar').style.display='block'//兼容ios的布局bug
-
+          document.querySelector(".com-tabbar").style.display = "block"; //兼容ios的布局bug
         });
     },
     handleBottomChange(status) {
@@ -156,25 +133,24 @@ export default {
     },
     loadBottom() {
       this.handleBottomChange("loading"); //上拉时 改变状态码
-      console.log(this.$refs.loadmore)
+      console.log(this.$refs.loadmore);
       this.pageNum += 1;
-        //上拉加载更多 模拟数据请求这里为了方便使用一次性定时器
-        setTimeout(() => {
+      //上拉加载更多 模拟数据请求这里为了方便使用一次性定时器
+      setTimeout(() => {
         if (this.pageNum <= 2) {
-            
-            this.$axios
-      .get("/bookshelf1")
-      .then(result => {
-        var res = result.data.data.imginfo;
-        this.bookList =this.bookList.concat(res) ;
-          this.handleBottomChange("loadingEnd"); //数据加载完毕 修改状态码
-          this.$refs.loadmore.onBottomLoaded();
-      })
-      .catch(err => {});
+          this.$axios
+            .get("/bookshelf1")
+            .then(result => {
+              var res = result.data.data.imginfo;
+              this.bookList = this.bookList.concat(res);
+              this.handleBottomChange("loadingEnd"); //数据加载完毕 修改状态码
+              this.$refs.loadmore.onBottomLoaded();
+            })
+            .catch(err => {});
         } else {
           this.allLoaded = true; //模拟数据加载完毕 禁用上拉加载
         }
-        }, 1000);
+      }, 1000);
     },
     handleTopChange(status) {
       this.topStatus = status;
@@ -194,10 +170,10 @@ export default {
     document.title = "书架";
   },
   deactivated() {
-      this.checkList = [];
-          this.showCheckbox = false;
-        document.querySelector('.com-tabbar').style.display='block'//兼容ios的布局bug
-  },
+    this.checkList = [];
+    this.showCheckbox = false;
+    document.querySelector(".com-tabbar").style.display = "block"; //兼容ios的布局bug
+  }
 };
 </script>
 
@@ -207,16 +183,33 @@ export default {
   padding: 0.4rem 0.4rem 0 0.4rem;
 
   .book-wrap {
-      float: left;
+    float: left;
     width: 33.33%;
-    margin-bottom: 0.2rem;
+    // margin-bottom: 0.2rem;
     position: relative;
-    max-height: 3.52rem;
+    height: 3.8rem;
+    &:first-child::before {
+      content: "最近在看";
+      display: block;
+      width: 1.2rem;
+      height: .42rem;
+      line-height: .42rem;
+      border-radius: .42rem 0 0 .42rem;
+      color: #fff;
+      font-size: .2rem;
+      background: rgba(0, 0, 0, 0.5);
+      text-align: center;
+      position: absolute;
+      top:1.96rem;
+      left: 50%;
+      transform: translateX(-.32rem)
+    }
     .bookimg {
       display: block;
       width: 1.76rem;
       height: 2.48rem;
       margin: 0 auto;
+      box-shadow: 0px 2px 8px rgba(197, 197, 197, 0.35);
     }
     .bookname {
       font-size: 0.28rem;
@@ -224,7 +217,7 @@ export default {
       line-height: 0.44rem;
       margin: 0 auto;
       width: 1.7rem;
-      padding-top: 0.3rem;
+      padding-top: .24rem;
     }
   }
 }
@@ -238,8 +231,8 @@ export default {
   input {
     -webkit-appearance: checkbox;
   }
-  .iconziyuan1:before{
-      position: absolute;
+  .iconziyuan1:before {
+    position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -252,37 +245,39 @@ export default {
   text-align: center;
   width: 100%;
   height: 0.88rem;
-  line-height: .88rem;
+  line-height: 0.88rem;
   background: #fff;
   z-index: 2;
 }
-.selectedIcon{
-    width: .36rem;height: .36rem;background: #6f6f6f;
-    border-radius: 100%;
-    position: absolute;
-    top: 2rem;
-    right: .4rem;
-    color: #fff;
-    font-size: .32rem;
+.selectedIcon {
+  width: 0.36rem;
+  height: 0.36rem;
+  background: #6f6f6f;
+  border-radius: 100%;
+  position: absolute;
+  top: 2rem;
+  right: 0.4rem;
+  color: #fff;
+  font-size: 0.32rem;
 }
-.sltCur{
-    background: #01813b!important;
-    animation: zoom .5s;
+.sltCur {
+  background: #01813b !important;
+  animation: zoom 0.5s;
 }
 
-@keyframes zoom{
-0%{ 
-    width: .36rem;
-    height: .36rem;
-    }
-50%{
-    width: .5rem;
-    height: .5rem;
-    font-size: .38rem;
-    }
-100%{ 
-    width: .36rem;
-    height: .36rem;
-    }
+@keyframes zoom {
+  0% {
+    width: 0.36rem;
+    height: 0.36rem;
+  }
+  50% {
+    width: 0.5rem;
+    height: 0.5rem;
+    font-size: 0.38rem;
+  }
+  100% {
+    width: 0.36rem;
+    height: 0.36rem;
+  }
 }
 </style>

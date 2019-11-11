@@ -2,14 +2,28 @@
  * @Author: vigorzhang
  * @Date: 2019-11-07 14:10:59
  * @LastEditors: vigorzhang
- * @LastEditTime: 2019-11-07 15:15:25
+ * @LastEditTime: 2019-11-10 22:01:33
  * @Description: 登录页面
  -->
 <template>
   <div class="view-login">
-    <input type="tel" class="phoneNum border" v-model="phoneNum" placeholder="手机号码" maxlength="11" />
-    <div class="border flex">
-      <input type="tel" class="validNum" placeholder="验证码" maxlength="6" v-model="validNum" />
+    <input
+      type="tel"
+      class="phoneNum border"
+      v-model="phoneNum"
+      placeholder="手机号码"
+      maxlength="11"
+      @blur="handleBlur(1,phoneNum)"
+    />
+    <div class="border flex" style="margin-bottom:.3rem">
+      <input
+        type="tel"
+        class="validNum"
+        placeholder="验证码"
+        maxlength="6"
+        v-model="validNum"
+        @blur="handleBlur(2,validNum)"
+      />
       <span class="getCode" @click="getCode">{{code}}</span>
     </div>
     <div class="loginBtn" @click="handleLogin">立刻登录</div>
@@ -24,12 +38,18 @@ export default {
       phoneNum: "",
       validNum: "",
       code: "获取验证码",
-      getCodeFlag: false,
-      timer: null
+      getCodeFlag: false, //获取验证码防抖
+      loginFlag: false, //登录防抖
+      timer: null,
+      toastInstance:null
     };
   },
   methods: {
     getCode() {
+      if (!this.checkPhone(this.phoneNum)) {
+        //获取验证码之前验证手机号
+        return;
+      }
       if (this.getCodeFlag) {
         return;
       }
@@ -50,16 +70,74 @@ export default {
       this.$axios
         .post("", { userPhone: this.phoneNum })
         .then(result => {
-          Toast("获取验证码成功");
+          this.Message("获取验证码成功")
+          setTimeout(() => {
+            this.getCodeFlag = false;
+          }, 500);
         })
         .catch(err => {
           //获取验证码失败时
           clearInterval(this.timer);
           this.code = "获取验证码";
+          this.getCodeFlag = false;
         });
     },
 
-    handleLogin() {}
+    handleLogin() {
+      if (!this.checkPhone(this.phoneNum) || !this.checkValid(this.validNum)) {
+        return;
+      }
+      if (this.loginFlag) {
+        return;
+      }
+      this.loginFlag = true;
+      this.$axios
+        .post("", {})
+        .then(result => {
+          //登录成功逻辑
+          this.loginFlag = false;
+        })
+        .catch(err => {
+          this.Message("登录失败,请稍后再试")
+          this.loginFlag = false;
+        });
+    },
+    handleBlur(flag, e) {
+      if (flag == 1) {
+        //手机号
+        this.checkPhone(this.phoneNum);
+      }
+      if (flag == 2) {
+        //验证码
+        this.checkValid(this.validNum);
+      }
+    },
+    checkPhone(phoneNum) {
+      if (!phoneNum.trim()) {
+          this.Message("请输入手机号码")
+        return false;
+      } else if (!/^1[3456789]\d{9}$/.test(phoneNum)) {
+          this.Message("手机号码错误,请重新输入")
+        return false;
+      }
+      return true;
+    },
+    checkValid(validNum) {
+      if (!validNum.trim()) {
+          this.Message("请输入验证码")
+        return false;
+      } else if (!/\d{6}$/.test(validNum)) {
+          this.Message("无效的验证码,请重新输入")
+        return false;
+      }
+      return true;
+    },
+    Message(message){
+        if(this.toastInstance){
+            this.toastInstance.close();
+        }
+        this.toastInstance=Toast(message)
+    }
   }
 };
 </script>
@@ -80,8 +158,7 @@ input {
 }
 
 .view-login {
-  margin-top: 2.34rem;
-  width: 100%;
+  padding: 2.34rem 0.8rem;
   position: relative;
 }
 
@@ -103,7 +180,7 @@ input {
   height: 0.62rem;
   line-height: 0.62rem;
   text-align: center;
-  width: 1.8rem;
+  width: 2.4rem;
   border-left: #d8d8d8 solid 2px;
 }
 

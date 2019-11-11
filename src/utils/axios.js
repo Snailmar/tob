@@ -2,7 +2,7 @@
  * @Author: vigorzhang
  * @Date: 2019-08-27 19:42:09
  * @LastEditors: vigorzhang
- * @LastEditTime: 2019-11-06 16:18:23
+ * @LastEditTime: 2019-11-07 21:22:20
  * @Description: 
  */
 import Vue from 'vue'
@@ -16,6 +16,7 @@ Vue.prototype.$axios=axios;
 
 //请求拦截
 axios.interceptors.request.use(config=>{
+    //要排除login页面的短信验证显示indicator
     Indicator.open({
         text:'Loading'
     })

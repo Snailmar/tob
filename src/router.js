@@ -2,7 +2,7 @@
  * @Author: vigorzhang
  * @Date: 2019-08-27 19:34:12
  * @LastEditors: vigorzhang
- * @LastEditTime: 2019-11-07 15:58:51
+ * @LastEditTime: 2019-11-07 22:55:38
  * @Description: 
  */
 import Vue from 'vue'
@@ -61,6 +61,9 @@ export default new Router({
     },
     {
       path:'/login',name:'login',component:() => import(/* webpackChunkName: "about" */ './views/Login.vue')
+    },
+    {
+      path:'/readerpage',name:'readerpage',component:() => import(/* webpackChunkName: "about" */ './views/ReaderPage.vue')
     }
   ]
 })
